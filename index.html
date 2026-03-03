@@ -309,6 +309,10 @@
       overflow: hidden;
     }
 
+    .hero-visual.status-warning .visual-badge-dot {
+      animation: readiness-cycle 4.6s ease-in-out infinite;
+    }
+
     .hero-visual h2 {
       font-size: 1.2rem;
       margin-bottom: 0.9rem;
@@ -362,7 +366,9 @@
       width: 0.6rem;
       height: 0.6rem;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--highlight), #d5bb87);
+      background: #31b56a;
+      box-shadow: 0 0 0 rgba(49, 181, 106, 0.45);
+      animation: readiness-pulse 1.8s ease-in-out infinite;
     }
 
     .visual-caption {
@@ -401,7 +407,87 @@
       display: block;
       height: 100%;
       border-radius: inherit;
-      background: linear-gradient(90deg, var(--accent), var(--accent-deep));
+      background: linear-gradient(90deg, #d85b45 0%, #e8a33c 45%, #31b56a 100%);
+      background-size: 200% 100%;
+      animation: status-flow 3.2s linear infinite;
+    }
+
+    .hero-visual.status-warning .visual-metric-bar.stability span {
+      background: linear-gradient(90deg, #d85b45 0%, #e8a33c 65%, #e8a33c 100%);
+      background-size: 200% 100%;
+      animation: status-flow 3.2s linear infinite, stability-swing 4.6s ease-in-out infinite;
+    }
+
+    @keyframes status-flow {
+      0% {
+        background-position: 0% 50%;
+      }
+      100% {
+        background-position: 100% 50%;
+      }
+    }
+
+    @keyframes readiness-pulse {
+      0%,
+      100% {
+        opacity: 0.9;
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(49, 181, 106, 0.35);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.08);
+        box-shadow: 0 0 0 8px rgba(49, 181, 106, 0);
+      }
+    }
+
+    @keyframes readiness-cycle {
+      0%,
+      20% {
+        background: #31b56a;
+        opacity: 0.9;
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(49, 181, 106, 0.35);
+      }
+      35% {
+        background: #31b56a;
+        opacity: 1;
+        transform: scale(1.08);
+        box-shadow: 0 0 0 8px rgba(49, 181, 106, 0);
+      }
+      55% {
+        background: #e8a33c;
+        opacity: 1;
+        transform: scale(1.04);
+        box-shadow: 0 0 0 6px rgba(232, 163, 60, 0);
+      }
+      75%,
+      100% {
+        background: #d85b45;
+        opacity: 0.9;
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(216, 91, 69, 0.35);
+      }
+      88% {
+        background: #d85b45;
+        opacity: 1;
+        transform: scale(1.08);
+        box-shadow: 0 0 0 8px rgba(216, 91, 69, 0);
+      }
+    }
+
+    @keyframes stability-swing {
+      0%,
+      20% {
+        width: 84%;
+      }
+      55% {
+        width: 62%;
+      }
+      75%,
+      100% {
+        width: 38%;
+      }
     }
 
     .signal-top {
@@ -1058,7 +1144,7 @@
             </div>
 
             <div class="hero-aside">
-              <aside class="hero-card hero-visual" style="color: var(--ink); background: var(--surface);">
+              <aside class="hero-card hero-visual status-warning" style="color: var(--ink); background: var(--surface);">
                 <h2>Operational view</h2>
                 <div class="visual-figure" style="background-image: url('images/fleetwatch-hero-art.png');">
                   <div class="visual-badge">
@@ -1069,7 +1155,7 @@
                 <div class="visual-metrics" aria-label="Monitoring focus">
                   <div class="visual-metric">
                     <strong>Stability</strong>
-                    <div class="visual-metric-bar"><span style="width: 84%;"></span></div>
+                    <div class="visual-metric-bar stability"><span style="width: 38%;"></span></div>
                   </div>
                   <div class="visual-metric">
                     <strong>Uptime</strong>
