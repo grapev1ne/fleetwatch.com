@@ -125,6 +125,16 @@
       color: var(--muted);
     }
 
+    .brand-scope {
+      display: block;
+      margin-top: 0.2rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(17, 50, 65, 0.7);
+    }
+
     .nav-links {
       display: flex;
       align-items: center;
@@ -294,6 +304,106 @@
       padding: 1.5rem;
     }
 
+    .hero-visual {
+      padding: 1.5rem;
+      overflow: hidden;
+    }
+
+    .hero-visual h2 {
+      font-size: 1.2rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .visual-figure {
+      position: relative;
+      min-height: 320px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(15, 107, 120, 0.1);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(15, 107, 120, 0.08)),
+        linear-gradient(135deg, rgba(15, 107, 120, 0.1), rgba(200, 162, 95, 0.08)),
+        #eef4f5;
+      background-size: cover;
+      background-position: center center;
+    }
+
+    .visual-figure::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(17, 50, 65, 0.08)),
+        radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.35), transparent 22%);
+      pointer-events: none;
+    }
+
+    .visual-badge {
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 0.7rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(15, 107, 120, 0.1);
+      color: var(--accent-deep);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    .visual-badge-dot {
+      width: 0.6rem;
+      height: 0.6rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--highlight), #d5bb87);
+    }
+
+    .visual-caption {
+      margin-top: 0.8rem;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .visual-metrics {
+      margin-top: 0.9rem;
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    .visual-metric {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .visual-metric strong {
+      font-size: 0.82rem;
+      color: var(--accent-deep);
+    }
+
+    .visual-metric-bar {
+      position: relative;
+      height: 0.55rem;
+      border-radius: 999px;
+      background: rgba(15, 107, 120, 0.12);
+      overflow: hidden;
+    }
+
+    .visual-metric-bar span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent), var(--accent-deep));
+    }
+
     .signal-top {
       display: flex;
       align-items: center;
@@ -435,6 +545,32 @@
         linear-gradient(180deg, rgba(15, 107, 120, 0.05), rgba(255, 255, 255, 0.95));
     }
 
+    .scenario-panel p + p {
+      margin-top: 0.9rem;
+    }
+
+    .scenario-panel p strong {
+      display: inline-block;
+      margin-bottom: 0.1rem;
+    }
+
+    .scenario-panel {
+      border-left: 4px solid var(--accent);
+    }
+
+    .scenario-kicker {
+      display: inline-block;
+      margin-bottom: 0.75rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(200, 162, 95, 0.14);
+      color: #7f6030;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
     .monitor-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -447,6 +583,7 @@
       border: 1px solid var(--line);
       background: var(--surface-strong);
       box-shadow: 0 10px 25px rgba(17, 50, 65, 0.06);
+      position: relative;
     }
 
     .monitor-icon {
@@ -459,6 +596,36 @@
       background: var(--accent-soft);
       color: var(--accent-deep);
       font-weight: 700;
+    }
+
+    .monitor-card::after {
+      content: "";
+      display: block;
+      width: 3.2rem;
+      height: 3px;
+      margin: 1rem 0 0.9rem;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), rgba(15, 107, 120, 0.18));
+    }
+
+    .monitor-pill {
+      display: inline-block;
+      margin-bottom: 0.45rem;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    .monitor-head {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .monitor-head-copy {
+      min-width: 0;
     }
 
     .monitor-card p {
@@ -474,6 +641,60 @@
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 1rem;
+    }
+
+    .signal-diagram {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+      gap: 0.8rem;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .signal-node {
+      padding: 0.9rem 1rem;
+      border-radius: 16px;
+      background: rgba(15, 107, 120, 0.05);
+      border: 1px solid rgba(15, 107, 120, 0.08);
+      text-align: center;
+    }
+
+    .signal-icon {
+      width: 2rem;
+      height: 2rem;
+      margin: 0 auto 0.55rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(15, 107, 120, 0.1);
+      color: var(--accent-deep);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .signal-node strong {
+      display: block;
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: var(--accent-deep);
+    }
+
+    .signal-node span {
+      display: block;
+      margin-top: 0.2rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .signal-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 3rem;
+      color: var(--accent);
+      font-size: 1.7rem;
+      font-weight: 700;
+      line-height: 1;
     }
 
     .flow-step {
@@ -657,6 +878,18 @@
       font-weight: 700;
     }
 
+    .footer-brand-link {
+      display: inline-block;
+      margin-top: 0.75rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .footer-brand-link:hover {
+      color: #ffffff;
+    }
+
     .footer-section {
       display: flex;
       flex-direction: column;
@@ -703,6 +936,10 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
+      .signal-diagram {
+        grid-template-columns: 1fr;
+      }
+
       .footer-content {
         grid-template-columns: 1fr 1fr;
       }
@@ -730,8 +967,15 @@
 
       .hero-stats,
       .monitor-grid,
-      .flow-grid {
+      .flow-grid,
+      .signal-diagram {
         grid-template-columns: 1fr;
+      }
+
+      .signal-arrow {
+        transform: rotate(90deg);
+        min-width: 0;
+        min-height: 1.5rem;
       }
 
       .footer-content {
@@ -770,6 +1014,7 @@
             <span class="brand-text">
               <strong>FleetWatch</strong>
               <span>Operational readiness for vessels</span>
+              <small class="brand-scope">Stability. Uptime. Application health.</small>
             </span>
           </a>
           <div class="nav-links">
@@ -795,6 +1040,7 @@
                 <a class="button button-secondary" href="#contact">Request Info</a>
                 <a class="button button-secondary" href="#how-it-works">See How It Works</a>
               </div>
+              <p><strong>When onboard systems drift or fail silently, vessels lose readiness — FleetWatch prevents that.</strong></p>
               <div class="hero-stats" aria-label="Service highlights">
                 <div class="hero-stat">
                   <strong>24/7</strong>
@@ -812,6 +1058,30 @@
             </div>
 
             <div class="hero-aside">
+              <aside class="hero-card hero-visual" style="color: var(--ink); background: var(--surface);">
+                <h2>Operational view</h2>
+                <div class="visual-figure" style="background-image: url('images/fleetwatch-hero-art.png');">
+                  <div class="visual-badge">
+                    <span class="visual-badge-dot"></span>
+                    Maritime readiness
+                  </div>
+                </div>
+                <div class="visual-metrics" aria-label="Monitoring focus">
+                  <div class="visual-metric">
+                    <strong>Stability</strong>
+                    <div class="visual-metric-bar"><span style="width: 84%;"></span></div>
+                  </div>
+                  <div class="visual-metric">
+                    <strong>Uptime</strong>
+                    <div class="visual-metric-bar"><span style="width: 72%;"></span></div>
+                  </div>
+                  <div class="visual-metric">
+                    <strong>Apps</strong>
+                    <div class="visual-metric-bar"><span style="width: 91%;"></span></div>
+                  </div>
+                </div>
+                <p class="visual-caption">Replace `images/fleetwatch-hero-art.png` with your chosen artwork. The card keeps a clean fallback background until the image is added.</p>
+              </aside>
               <aside class="hero-card signal-card" style="color: var(--ink); background: var(--surface);">
                 <div class="signal-top">
                   <h2>What operators need</h2>
@@ -857,8 +1127,13 @@
           </div>
           <div class="monitor-grid">
             <article class="monitor-card">
-              <div class="monitor-icon">A</div>
-              <h3>System Stability</h3>
+              <div class="monitor-head">
+                <div class="monitor-icon">A</div>
+                <div class="monitor-head-copy">
+                  <span class="monitor-pill">Stability</span>
+                  <h3>System Stability</h3>
+                </div>
+              </div>
               <p>Core operating conditions that affect whether onboard computers stay dependable.</p>
               <div class="monitor-list">
                 <ul>
@@ -873,8 +1148,13 @@
             </article>
 
             <article class="monitor-card">
-              <div class="monitor-icon">B</div>
-              <h3>Performance &amp; Uptime</h3>
+              <div class="monitor-head">
+                <div class="monitor-icon">B</div>
+                <div class="monitor-head-copy">
+                  <span class="monitor-pill">Performance</span>
+                  <h3>Performance &amp; Uptime</h3>
+                </div>
+              </div>
               <p>Practical indicators that show when systems are slowing down or dropping out.</p>
               <div class="monitor-list">
                 <ul>
@@ -887,8 +1167,13 @@
             </article>
 
             <article class="monitor-card">
-              <div class="monitor-icon">C</div>
-              <h3>Application-Level Health</h3>
+              <div class="monitor-head">
+                <div class="monitor-icon">C</div>
+                <div class="monitor-head-copy">
+                  <span class="monitor-pill">Application Health</span>
+                  <h3>Application-Level Health</h3>
+                </div>
+              </div>
               <p>Stability checks for the applications crews and support teams rely on every day.</p>
               <div class="monitor-list">
                 <ul>
@@ -907,6 +1192,31 @@
           <div class="section-head">
             <span class="section-tag">How FleetWatch Works</span>
             <h2>Simple flow, built around real vessel connectivity</h2>
+          </div>
+          <div class="signal-diagram" aria-label="Signal flow summary">
+            <div class="signal-node">
+              <div class="signal-icon" aria-hidden="true">◉</div>
+              <strong>Onboard Device</strong>
+              <span>Collects logs</span>
+            </div>
+            <div class="signal-arrow" aria-hidden="true">→</div>
+            <div class="signal-node">
+              <div class="signal-icon" aria-hidden="true">≋</div>
+              <strong>Buffer</strong>
+              <span>Holds during outages</span>
+            </div>
+            <div class="signal-arrow" aria-hidden="true">→</div>
+            <div class="signal-node">
+              <div class="signal-icon" aria-hidden="true">◎</div>
+              <strong>Shore Review</strong>
+              <span>People filter noise</span>
+            </div>
+            <div class="signal-arrow" aria-hidden="true">→</div>
+            <div class="signal-node">
+              <div class="signal-icon" aria-hidden="true">!</div>
+              <strong>Escalation</strong>
+              <span>Only what matters</span>
+            </div>
           </div>
           <div class="flow-grid">
             <article class="flow-step">
@@ -929,6 +1239,13 @@
               <h3>Escalates only what matters</h3>
               <p>Human review ensures only meaningful issues are raised. No analytics or detection runs onboard.</p>
             </article>
+          </div>
+          <div class="panel panel-accent scenario-panel" style="margin-top: 1.25rem;">
+            <span class="scenario-kicker">Real-world example</span>
+            <h3>Operator scenario</h3>
+            <p><strong>Spam Flood on a Vessel</strong></p>
+            <p>A vessel suddenly receives hundreds of spam emails per minute, slowing down the mail client and congesting the satellite link. FleetWatch detects the abnormal volume, extracts the relevant log entries, and alerts your support team with everything needed to submit to your email provider.</p>
+            <p>For operators who prefer a hands-off approach, our team can manage the full end-to-end remediation or incident response coordination with third-party vendors, from sample extraction to provider submission, ensuring the vessel returns to normal operation quickly.</p>
           </div>
         </div>
       </section>
@@ -972,7 +1289,7 @@
                 <li>FleetWatch is not cybersecurity.</li>
                 <li>It does not replace IT or SOC.</li>
                 <li>No threat detection.</li>
-                <li>No incident response.</li>
+                <li>Hands-on remediation coordination is available only in a higher support tier.</li>
                 <li>Purely operational readiness and system stability.</li>
               </ul>
             </div>
@@ -1038,6 +1355,7 @@
             <strong>FleetWatch</strong>
             <p>Operational readiness and system stability for vessels.</p>
             <p class="footer-company">Part of Tardisoft Systems</p>
+            <a class="footer-brand-link" href="https://tardisoft.systems">Tardisoft Systems</a>
           </div>
 
           <div class="footer-section">
