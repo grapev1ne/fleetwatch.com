@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FleetWatch | Operational Readiness for Vessels</title>
+  <style>
+    :root {
+      --bg: #eef4f5;
+      --surface: rgba(255, 255, 255, 0.9);
+      --surface-strong: #ffffff;
+      --ink: #113241;
+      --muted: #4b6570;
+      --line: rgba(17, 50, 65, 0.12);
+      --accent: #0f6b78;
+      --accent-deep: #0a4f5a;
+      --accent-soft: #d9eef0;
+      --highlight: #c8a25f;
+      --shadow: 0 18px 45px rgba(17, 50, 65, 0.12);
+      --radius: 22px;
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(15, 107, 120, 0.18), transparent 36%),
+        radial-gradient(circle at top left, rgba(200, 162, 95, 0.12), transparent 28%),
+        linear-gradient(180deg, #f7fbfb 0%, var(--bg) 40%, #f4f7f7 100%);
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background-image:
+        linear-gradient(rgba(17, 50, 65, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(17, 50, 65, 0.03) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    .page-shell {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      width: min(calc(100% - 2rem), var(--max));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding: 1.25rem 0;
+    }
+
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem 1.1rem;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 10px 30px rgba(17, 50, 65, 0.08);
+      backdrop-filter: blur(18px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-mark {
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(145deg, var(--accent), var(--accent-deep));
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+      font-size: 1rem;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand-text strong {
+      font-size: 1rem;
+    }
+
+    .brand-text span {
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 1.1rem;
+      font-size: 0.94rem;
+      color: var(--muted);
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3rem;
+      padding: 0.85rem 1.4rem;
+      border-radius: 999px;
+      border: 0;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      box-shadow: 0 14px 24px rgba(15, 107, 120, 0.22);
+    }
+
+    .button-secondary {
+      color: var(--accent-deep);
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(15, 107, 120, 0.15);
+    }
+
+    .hero {
+      padding: 1rem 0 3rem;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .panel,
+    .contact-card,
+    .pricing-card {
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      border-radius: calc(var(--radius) + 4px);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(2rem, 4vw, 4rem);
+      min-height: 100%;
+      background:
+        linear-gradient(135deg, rgba(15, 107, 120, 0.94), rgba(10, 79, 90, 0.9)),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent);
+      color: #fff;
+    }
+
+    .hero-card::before,
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.24;
+      background: rgba(255, 255, 255, 0.16);
+    }
+
+    .hero-card::before {
+      width: 18rem;
+      height: 18rem;
+      right: -5rem;
+      top: -4rem;
+    }
+
+    .hero-card::after {
+      width: 12rem;
+      height: 12rem;
+      left: -4rem;
+      bottom: -4rem;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      margin-bottom: 1.1rem;
+      padding: 0.45rem 0.75rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2.5rem, 5vw, 4.8rem);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+      max-width: 11ch;
+    }
+
+    .hero p {
+      margin: 1.2rem 0 0;
+      max-width: 36rem;
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+      margin-top: 1.8rem;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.9rem;
+      margin-top: 2rem;
+    }
+
+    .hero-stat {
+      padding: 1rem;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 1.1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .hero-stat span {
+      display: block;
+      font-size: 0.88rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .hero-aside {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .signal-card {
+      padding: 1.5rem;
+    }
+
+    .signal-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .signal-top h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .status-pill {
+      padding: 0.4rem 0.7rem;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .signal-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.85rem;
+    }
+
+    .signal-list li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.7rem;
+      align-items: start;
+      color: var(--muted);
+    }
+
+    .signal-list li::before {
+      content: "";
+      width: 0.75rem;
+      height: 0.75rem;
+      margin-top: 0.35rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--highlight), #d5bb87);
+      box-shadow: 0 0 0 5px rgba(200, 162, 95, 0.13);
+    }
+
+    .mini-card {
+      padding: 1.4rem;
+      display: grid;
+      gap: 0.7rem;
+    }
+
+    .mini-card strong {
+      font-size: 1rem;
+    }
+
+    .mini-card p,
+    .section-intro p,
+    .panel p,
+    .contact-copy p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    main {
+      padding-bottom: 4rem;
+    }
+
+    section {
+      padding: 1rem 0 1.5rem;
+    }
+
+    .section-head {
+      display: grid;
+      gap: 0.6rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .section-tag {
+      font-size: 0.84rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.85rem, 3vw, 2.8rem);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      line-height: 1.2;
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 1.6rem;
+    }
+
+    .panel ul,
+    .monitor-list ul,
+    .receive-list,
+    .boundary-list {
+      margin: 0;
+      padding-left: 1.15rem;
+      color: var(--muted);
+    }
+
+    .panel ul li,
+    .monitor-list li,
+    .receive-list li,
+    .boundary-list li {
+      margin-bottom: 0.55rem;
+    }
+
+    .panel ul li:last-child,
+    .monitor-list li:last-child,
+    .receive-list li:last-child,
+    .boundary-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    .panel-accent {
+      border: 1px solid rgba(15, 107, 120, 0.12);
+      background:
+        linear-gradient(180deg, rgba(15, 107, 120, 0.05), rgba(255, 255, 255, 0.95));
+    }
+
+    .monitor-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .monitor-card {
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      background: var(--surface-strong);
+      box-shadow: 0 10px 25px rgba(17, 50, 65, 0.06);
+    }
+
+    .monitor-icon {
+      width: 2.7rem;
+      height: 2.7rem;
+      display: grid;
+      place-items: center;
+      margin-bottom: 1rem;
+      border-radius: 14px;
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+      font-weight: 700;
+    }
+
+    .monitor-card p {
+      margin: 0.6rem 0 0.9rem;
+      color: var(--muted);
+    }
+
+    .monitor-list ul {
+      padding-left: 1rem;
+    }
+
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+    }
+
+    .flow-step {
+      position: relative;
+      padding: 1.4rem;
+      border-radius: var(--radius);
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 25px rgba(17, 50, 65, 0.05);
+    }
+
+    .flow-step::after {
+      content: "";
+      position: absolute;
+      top: 2rem;
+      right: -0.6rem;
+      width: 1.2rem;
+      height: 2px;
+      background: rgba(15, 107, 120, 0.24);
+    }
+
+    .flow-step:last-child::after {
+      display: none;
+    }
+
+    .flow-number {
+      display: inline-grid;
+      place-items: center;
+      width: 2rem;
+      height: 2rem;
+      margin-bottom: 0.9rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .flow-step p {
+      margin: 0.55rem 0 0;
+      color: var(--muted);
+    }
+
+    .receive-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 340px);
+      gap: 1rem;
+      align-items: stretch;
+    }
+
+    .pricing-card {
+      padding: 1.8rem;
+      text-align: center;
+      background:
+        linear-gradient(180deg, rgba(15, 107, 120, 0.08), rgba(255, 255, 255, 0.98));
+    }
+
+    .price-label {
+      display: inline-block;
+      margin-bottom: 0.7rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      background: rgba(200, 162, 95, 0.14);
+      color: #7f6030;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .price {
+      margin: 0;
+      font-size: clamp(2.4rem, 4vw, 3.5rem);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .price small {
+      display: block;
+      margin-top: 0.55rem;
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: normal;
+    }
+
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 1.2rem;
+      align-items: stretch;
+    }
+
+    .contact-card {
+      padding: 1.7rem;
+    }
+
+    .contact-points {
+      margin: 1rem 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 0.8rem;
+    }
+
+    .contact-points li {
+      padding: 0.9rem 1rem;
+      border-radius: 16px;
+      background: rgba(15, 107, 120, 0.05);
+      color: var(--muted);
+    }
+
+    form {
+      display: grid;
+      gap: 0.95rem;
+    }
+
+    label {
+      display: grid;
+      gap: 0.4rem;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border-radius: 14px;
+      border: 1px solid rgba(17, 50, 65, 0.15);
+      background: rgba(255, 255, 255, 0.92);
+      font: inherit;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: rgba(15, 107, 120, 0.45);
+      box-shadow: 0 0 0 4px rgba(15, 107, 120, 0.08);
+    }
+
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .site-footer {
+      padding: 0.5rem 0 2.2rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .footer-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(17, 50, 65, 0.12);
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .two-column,
+      .receive-grid,
+      .contact-wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .monitor-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .flow-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .flow-step::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .nav-bar,
+      .nav-links {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nav-links {
+        gap: 0.75rem;
+      }
+
+      .nav-links a,
+      .nav-links .button {
+        text-align: center;
+      }
+
+      .hero-stats,
+      .monitor-grid,
+      .flow-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card,
+      .signal-card,
+      .panel,
+      .contact-card,
+      .pricing-card {
+        padding: 1.25rem;
+      }
+
+      .hero h1 {
+        max-width: none;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header class="site-header">
+      <div class="container">
+        <nav class="nav-bar" aria-label="Primary">
+          <a class="brand" href="#top">
+            <span class="brand-mark">FW</span>
+            <span class="brand-text">
+              <strong>FleetWatch</strong>
+              <span>Operational readiness for vessels</span>
+            </span>
+          </a>
+          <div class="nav-links">
+            <a href="#what-we-do">What It Does</a>
+            <a href="#what-we-monitor">What We Monitor</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#pricing">Pricing</a>
+            <a class="button button-primary" href="#contact">Request Info</a>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="container">
+          <div class="hero-grid">
+            <div class="hero-card">
+              <div class="eyebrow">Built for operators ashore and onboard</div>
+              <h1>FleetWatch — Keeping Your Vessel&rsquo;s IT Ready for Work</h1>
+              <p>Continuous monitoring of system stability, performance, and key onboard applications.</p>
+              <div class="hero-actions">
+                <a class="button button-secondary" href="#contact">Request Info</a>
+                <a class="button button-secondary" href="#how-it-works">See How It Works</a>
+              </div>
+              <div class="hero-stats" aria-label="Service highlights">
+                <div class="hero-stat">
+                  <strong>24/7</strong>
+                  <span>Watch over vessel systems</span>
+                </div>
+                <div class="hero-stat">
+                  <strong>Shore-Side</strong>
+                  <span>Meaningful issues reviewed by people</span>
+                </div>
+                <div class="hero-stat">
+                  <strong>No Crew Burden</strong>
+                  <span>No dashboards or daily admin</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-aside">
+              <aside class="hero-card signal-card" style="color: var(--ink); background: var(--surface);">
+                <div class="signal-top">
+                  <h2>What operators need</h2>
+                  <span class="status-pill">Steady oversight</span>
+                </div>
+                <ul class="signal-list">
+                  <li>Early visibility when onboard systems become unstable or stop reporting.</li>
+                  <li>Clear escalation only when an issue affects readiness or vessel operations.</li>
+                  <li>Practical monitoring across mixed vendor environments and changing satellite links.</li>
+                </ul>
+              </aside>
+              <div class="panel mini-card panel-accent">
+                <strong>Designed for shipboard reality</strong>
+                <p>FleetWatch keeps collecting health signals locally, holds data during satellite outages, and forwards it when the link returns.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="what-we-do">
+        <div class="container">
+          <div class="two-column">
+            <div class="section-intro">
+              <div class="section-head">
+                <span class="section-tag">What FleetWatch Does</span>
+                <h2>Clear oversight of onboard system health</h2>
+              </div>
+              <p>FleetWatch monitors the health and stability of onboard computers and critical applications so operators can see when systems are drifting, slowing down, or failing.</p>
+            </div>
+            <div class="panel">
+              <p>It is built for vessel operators, superintendents, and support teams who need dependable information without extra noise. The focus is simple: keep key systems available, stable, and ready for daily work.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="what-we-monitor">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-tag">What We Monitor</span>
+            <h2>Three areas that matter onboard</h2>
+          </div>
+          <div class="monitor-grid">
+            <article class="monitor-card">
+              <div class="monitor-icon">A</div>
+              <h3>System Stability</h3>
+              <p>Core operating conditions that affect whether onboard computers stay dependable.</p>
+              <div class="monitor-list">
+                <ul>
+                  <li>Service crashes</li>
+                  <li>Unexpected reboots</li>
+                  <li>Boot failures</li>
+                  <li>Driver and hardware issues</li>
+                  <li>Disk or memory problems</li>
+                  <li>Overheating or throttling</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="monitor-card">
+              <div class="monitor-icon">B</div>
+              <h3>Performance &amp; Uptime</h3>
+              <p>Practical indicators that show when systems are slowing down or dropping out.</p>
+              <div class="monitor-list">
+                <ul>
+                  <li>Resource exhaustion (CPU, RAM, disk)</li>
+                  <li>Systems going offline</li>
+                  <li>Connectivity gaps</li>
+                  <li>Log pipeline interruptions during satellite outages</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="monitor-card">
+              <div class="monitor-icon">C</div>
+              <h3>Application-Level Health</h3>
+              <p>Stability checks for the applications crews and support teams rely on every day.</p>
+              <div class="monitor-list">
+                <ul>
+                  <li>Planned Maintenance System errors (database, sync, service failures)</li>
+                  <li>Charting and navigation software issues (chart update failures, licensing, driver problems)</li>
+                  <li>Email system issues (SMTP/IMAP failures, queue buildup, DNS problems)</li>
+                </ul>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="how-it-works">
+        <div class="container">
+          <div class="section-head">
+            <span class="section-tag">How FleetWatch Works</span>
+            <h2>Simple flow, built around real vessel connectivity</h2>
+          </div>
+          <div class="flow-grid">
+            <article class="flow-step">
+              <span class="flow-number">1</span>
+              <h3>Collects health signals onboard</h3>
+              <p>An onboard device gathers logs and stability data from the systems that matter.</p>
+            </article>
+            <article class="flow-step">
+              <span class="flow-number">2</span>
+              <h3>Buffers during satellite outages</h3>
+              <p>If the vessel loses connection, information is held locally until the link is available again.</p>
+            </article>
+            <article class="flow-step">
+              <span class="flow-number">3</span>
+              <h3>Sends data to shore</h3>
+              <p>When connectivity returns, the buffered data is forwarded for shore-side review.</p>
+            </article>
+            <article class="flow-step">
+              <span class="flow-number">4</span>
+              <h3>Escalates only what matters</h3>
+              <p>Human review ensures only meaningful issues are raised. No analytics or detection runs onboard.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="receive-grid">
+            <div class="panel">
+              <div class="section-head">
+                <span class="section-tag">What You Receive</span>
+                <h2>Support without extra crew workload</h2>
+              </div>
+              <ul class="receive-list">
+                <li>24/7 monitoring</li>
+                <li>Email escalation for issues that matter</li>
+                <li>Monthly operational readiness report</li>
+                <li>Vendor-neutral oversight of key onboard systems</li>
+                <li>No dashboards or workload for crew</li>
+              </ul>
+            </div>
+
+            <div class="pricing-card" id="pricing">
+              <span class="price-label">Pricing</span>
+              <p class="price">Starts from $75<small>per vessel per month</small></p>
+              <p>Simple entry point for steady oversight across your fleet.</p>
+              <a class="button button-primary" href="#contact">Request Info</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="two-column">
+            <div class="panel panel-accent">
+              <div class="section-head">
+                <span class="section-tag">Clear Boundaries</span>
+                <h2>Focused only on operational readiness</h2>
+              </div>
+              <ul class="boundary-list">
+                <li>FleetWatch is not cybersecurity.</li>
+                <li>It does not replace IT or SOC.</li>
+                <li>No threat detection.</li>
+                <li>No incident response.</li>
+                <li>Purely operational readiness and system stability.</li>
+              </ul>
+            </div>
+
+            <div class="panel">
+              <h3>Why that matters</h3>
+              <p>FleetWatch is meant to give vessel operators and support teams a reliable operational view of onboard systems. The service stays tightly focused on application health, system drift, stability, and uptime so reports remain useful and easy to act on.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact">
+        <div class="container">
+          <div class="contact-wrap">
+            <div class="contact-card contact-copy">
+              <div class="section-head">
+                <span class="section-tag">Contact</span>
+                <h2>Request a call</h2>
+              </div>
+              <p>Tell us about your fleet, current onboard systems, or where you need more dependable oversight. We will respond with practical next steps.</p>
+              <ul class="contact-points">
+                <li>Built for vessel operators, superintendents, and shore-side IT support.</li>
+                <li>Suitable for mixed fleets with changing links, software vendors, and equipment ages.</li>
+                <li>Focused on readiness, continuity, and stable day-to-day operations.</li>
+              </ul>
+            </div>
+
+            <div class="contact-card">
+              <form action="#" method="post">
+                <label for="name">
+                  Name
+                  <input id="name" name="name" type="text" placeholder="Your name" required>
+                </label>
+
+                <label for="company">
+                  Company
+                  <input id="company" name="company" type="text" placeholder="Company name" required>
+                </label>
+
+                <label for="email">
+                  Email
+                  <input id="email" name="email" type="email" placeholder="you@company.com" required>
+                </label>
+
+                <label for="message">
+                  Message
+                  <textarea id="message" name="message" placeholder="Tell us about your vessels, systems, or support needs." required></textarea>
+                </label>
+
+                <button class="button button-primary" type="submit">Request a Call</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-bar">
+          <span>FleetWatch</span>
+          <span>Operational readiness and system stability for vessels.</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
