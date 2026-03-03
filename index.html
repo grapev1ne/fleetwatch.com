@@ -622,20 +622,69 @@
       resize: vertical;
     }
 
-    .site-footer {
-      padding: 0.5rem 0 2.2rem;
-      color: var(--muted);
+    .footer {
+      margin-top: 1rem;
+      padding: 3rem 0 2rem;
+      background:
+        radial-gradient(circle at top right, rgba(200, 162, 95, 0.08), transparent 25%),
+        linear-gradient(180deg, #0f2430 0%, #0a1a22 100%);
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-brand strong {
+      display: block;
+      margin-bottom: 0.45rem;
+      font-size: 1.45rem;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+
+    .footer-brand p {
+      margin: 0;
+      color: rgba(255, 255, 255, 0.72);
       font-size: 0.92rem;
     }
 
-    .footer-bar {
+    .footer-company {
+      margin-top: 0.85rem;
+      font-weight: 700;
+    }
+
+    .footer-section {
       display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.8rem;
-      padding-top: 1rem;
-      border-top: 1px solid rgba(17, 50, 65, 0.12);
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .footer-section h4 {
+      margin: 0 0 0.2rem;
+      color: #ffffff;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .footer-section a {
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 0.92rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-section a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      padding-top: 1.25rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      text-align: center;
+      font-size: 0.86rem;
     }
 
     @media (max-width: 1080px) {
@@ -652,6 +701,10 @@
 
       .flow-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr 1fr;
       }
 
       .flow-step::after {
@@ -678,6 +731,10 @@
       .hero-stats,
       .monitor-grid,
       .flow-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
         grid-template-columns: 1fr;
       }
 
@@ -945,7 +1002,7 @@
             </div>
 
             <div class="contact-card">
-              <form action="#" method="post">
+              <form action="https://formspree.io/f/xkovlprz" method="post">
                 <label for="name">
                   Name
                   <input id="name" name="name" type="text" placeholder="Your name" required>
@@ -974,11 +1031,38 @@
       </section>
     </main>
 
-    <footer class="site-footer">
+    <footer class="footer">
       <div class="container">
-        <div class="footer-bar">
-          <span>FleetWatch</span>
-          <span>Operational readiness and system stability for vessels.</span>
+        <div class="footer-content">
+          <div class="footer-brand">
+            <strong>FleetWatch</strong>
+            <p>Operational readiness and system stability for vessels.</p>
+            <p class="footer-company">Part of Tardisoft Systems</p>
+          </div>
+
+          <div class="footer-section">
+            <h4>Service</h4>
+            <a href="#what-we-do">What It Does</a>
+            <a href="#what-we-monitor">What We Monitor</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#pricing">Pricing</a>
+          </div>
+
+          <div class="footer-section">
+            <h4>Company</h4>
+            <a href="#contact">Contact</a>
+            <a href="#top">Back to Top</a>
+          </div>
+
+          <div class="footer-section">
+            <h4>Other Products</h4>
+            <a href="https://fleetfolders.com">FleetFolders</a>
+            <a href="https://trackingsafety.com">TrackingSafety</a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 Tardisoft Systems. All rights reserved.</p>
         </div>
       </div>
     </footer>
