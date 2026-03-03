@@ -838,6 +838,19 @@
         linear-gradient(180deg, rgba(15, 107, 120, 0.08), rgba(255, 255, 255, 0.98));
     }
 
+    .pricing-card.reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(22px);
+      box-shadow: 0 10px 24px rgba(17, 50, 65, 0.08);
+      transition: opacity 0.6s ease, transform 0.6s ease, box-shadow 0.6s ease;
+    }
+
+    .pricing-card.reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      box-shadow: 0 22px 40px rgba(17, 50, 65, 0.16);
+    }
+
     .price-label {
       display: inline-block;
       margin-bottom: 0.7rem;
@@ -1353,7 +1366,7 @@
               </ul>
             </div>
 
-            <div class="pricing-card" id="pricing">
+            <div class="pricing-card reveal-on-scroll" id="pricing">
               <span class="price-label">Pricing</span>
               <p class="price">Starts from $75<small>per vessel per month</small></p>
               <p>Simple entry point for steady oversight across your fleet.</p>
@@ -1471,5 +1484,26 @@
       </div>
     </footer>
   </div>
+  <script>
+    (function () {
+      var card = document.querySelector('.reveal-on-scroll');
+      if (!card) return;
+
+      if (!('IntersectionObserver' in window)) {
+        card.classList.add('is-visible');
+        return;
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          card.classList.add('is-visible');
+          observer.unobserve(card);
+        });
+      }, { threshold: 0.25 });
+
+      observer.observe(card);
+    }());
+  </script>
 </body>
 </html>
